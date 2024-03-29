@@ -10,8 +10,13 @@ namespace Data_Access_Layer.Contexts
 {
     public class ApplicationDbContext : DbContext
     {
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-            => optionsBuilder.UseSqlServer("Server =.; Database = MvcOperationSystem; trusted_connection =true;");
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options):base(options)
+        {
+            
+        }
+
+        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        //    => optionsBuilder.UseSqlServer("Server =.; Database = MvcOperationSystem; trusted_connection =true;");
 
 
         public DbSet<Department> Departments { get; set; }

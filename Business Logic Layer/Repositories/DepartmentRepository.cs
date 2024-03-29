@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Business_Logic_Layer.Repositories
 {
-    internal class DepartmentRepository : IDepartmentRepository
+    public class DepartmentRepository : IDepartmentRepository
     {
         private readonly ApplicationDbContext _dbContext;
 
@@ -20,28 +20,32 @@ namespace Business_Logic_Layer.Repositories
 
         public int Add(Department department)
         {
-            //_dbContext.Departments.Add(department);
-            throw new NotImplementedException();
+
+            _dbContext.Departments.Add(department);
+            return _dbContext.SaveChanges();
+
         }
 
         public int Delete(Department department)
         {
-            throw new NotImplementedException();
+            _dbContext.Remove(department);
+            return _dbContext.SaveChanges();
         }
 
         public IEnumerable<Department> GetAll()
-        {
-            throw new NotImplementedException();
-        }
+        => _dbContext.Departments.ToList();
+
 
         public Department GetById(int id)
         {
-            throw new NotImplementedException();
+            return _dbContext.Departments.Find(id);
+
         }
 
         public int Update(Department department)
         {
-            throw new NotImplementedException();
+            _dbContext.Departments.Update(department);
+            return _dbContext.SaveChanges();
         }
     }
 }
