@@ -7,8 +7,9 @@ using System.Threading.Tasks;
 
 namespace Business_Logic_Layer.Interfaces
 {
-    public interface IDepartmentRepository : IGenericRepository<Department>
+    public interface IEmployeeRepository : IGenericRepository<Employee>
     {
+        IQueryable<Employee> GetEmployeesByAddress(string address);
 
     }
 }

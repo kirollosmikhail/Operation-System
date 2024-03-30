@@ -34,6 +34,7 @@ namespace Presentation_Layer
             });// dependency injection
             
             services.AddScoped<IDepartmentRepository, DepartmentRepository>();
+            services.AddScoped<IEmployeeRepository, EmployeeRepository>();
 
         }
 

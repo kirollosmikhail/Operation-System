@@ -20,6 +20,7 @@ namespace Data_Access_Layer.Contexts
 
 
         public DbSet<Department> Departments { get; set; }
+        public DbSet<Employee>  Employees { get; set; }
 
     }
 }
