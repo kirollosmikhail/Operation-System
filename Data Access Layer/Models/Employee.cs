@@ -24,7 +24,6 @@ namespace Data_Access_Layer.Models
             ErrorMessage = "Adress Must Be Like 123-Street-City-Country")]
         public string Address { get; set; }
 
-
         [DataType(DataType.Currency)]
         public decimal Salary { get; set; }
         public bool IsActive { get; set; }
@@ -34,8 +33,10 @@ namespace Data_Access_Layer.Models
         public string PhoneNumber { get; set; }
         public DateTime HireDate { get; set; }
         public DateTime CreationDate { get; set; } = DateTime.Now;
-
-
+        [ForeignKey("Department")]
+        public int? DepartmentId { get; set; }
+        [InverseProperty("Employees")]
+        public Department Department { get; set; }
 
     }
 }

@@ -10,6 +10,8 @@ namespace Business_Logic_Layer.Interfaces
     public interface IEmployeeRepository : IGenericRepository<Employee>
     {
         IQueryable<Employee> GetEmployeesByAddress(string address);
+        IQueryable<Employee> GetEmployeesByName(string Name);
 
     }
+
 }

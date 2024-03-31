@@ -3,6 +3,12 @@
 @{
     ViewData["Title"] = "All Departments";
 }
+@if (TempData["Message"] is not null)
+{
+    <div class="alert alert-success">
+        @TempData["Message"]
+    </div>
+}
 
 <a asp-action="Create" class="btn btn-success">Create New Department</a>
 <br />
@@ -28,9 +34,7 @@
                     <td>@Html.DisplayFor(x => item.Code)</td>
                     <td>@Html.DisplayFor(x => item.Name)</td>
                     <td>@Html.DisplayFor(x => item.DateOfCreation)</td>
-                    <td><a asp-action="Details" asp-route-id="@item.Id"><i class="fas fa-eye"></i></a></td>
-                    <td><a asp-action="Edit" asp-route-id="@item.Id"><i class="fas fa-edit"></i></a></td>
-                    <td><a asp-action="Delete" asp-route-id="@item.Id"><i class="fas fa-trash"></i></a></td>
+                    <partial name="_ButtonsPartialView" model="item.Id" />
                 </tr>
             }
         </tbody>

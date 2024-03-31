@@ -28,9 +28,10 @@ namespace Presentation_Layer.Controllers
         {
             if (ModelState.IsValid)
             {
-                _departmentRespository.Add(department);
+                int result = _departmentRespository.Add(department);
+                if (result > 0)
+                    TempData["Message"] = "Department Is Created";
                 return RedirectToAction(nameof(Index));
-
             }
 
             return View(department);
@@ -78,12 +79,12 @@ namespace Presentation_Layer.Controllers
 
         public IActionResult Delete(int id)
         {
-            
-            return Details(id,"Delete");
+
+            return Details(id, "Delete");
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Delete(Department department,[FromRoute]int? id)
+        public IActionResult Delete(Department department, [FromRoute] int? id)
         {
 
             if (department.Id != id)
@@ -97,7 +98,7 @@ namespace Presentation_Layer.Controllers
                 }
                 catch (Exception ex)
                 {
-                    ModelState.AddModelError(string.Empty,ex.Message);
+                    ModelState.AddModelError(string.Empty, ex.Message);
                     return View(department);
                 }
             }
