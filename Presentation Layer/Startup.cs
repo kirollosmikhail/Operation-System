@@ -1,9 +1,12 @@
 using Business_Logic_Layer.Interfaces;
 using Business_Logic_Layer.Repositories;
 using Data_Access_Layer.Contexts;
+using Data_Access_Layer.Models;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -35,9 +38,25 @@ namespace Presentation_Layer
             });// dependency injection
             
             services.AddScoped<IDepartmentRepository, DepartmentRepository>();
+            services.AddAutoMapper(M => M.AddProfile(new EmployeeProfile()));
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
-            services.AddAutoMapper(M => M.AddProfile(new EmployeeProfile()));
+            services.AddIdentity<ApplicationUser , IdentityRole>(Options =>
+            {
+                Options.Password.RequireNonAlphanumeric = true; // @ # $
+                Options.Password.RequireDigit = true; // 12345
+                Options.Password.RequireLowercase = true; // asd
+                Options.Password.RequireUppercase = true; // ASD
+            })
+                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddDefaultTokenProviders();
+
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options=>
+            {
+                options.LoginPath = "Account/Login";
+                options.AccessDeniedPath = "Home/Error";
+            });
+
 
 
         }
@@ -60,13 +79,14 @@ namespace Presentation_Layer
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=Account}/{action=Login}/{id?}");
             });
         }
     }

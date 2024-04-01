@@ -1,4 +1,6 @@
 ﻿using Data_Access_Layer.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -8,19 +10,16 @@ using System.Threading.Tasks;
 
 namespace Data_Access_Layer.Contexts
 {
-    public class ApplicationDbContext : DbContext
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options):base(options)
         {
             
         }
 
-        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        //    => optionsBuilder.UseSqlServer("Server =.; Database = MvcOperationSystem; trusted_connection =true;");
-
-
         public DbSet<Department> Departments { get; set; }
         public DbSet<Employee>  Employees { get; set; }
+
 
     }
 }
