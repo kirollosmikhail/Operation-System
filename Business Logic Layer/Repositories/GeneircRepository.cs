@@ -19,9 +19,9 @@ namespace Business_Logic_Layer.Repositories
             _dbcontext = dbcontext;
         }
 
-        public void Add(T item)
+        public async Task AddAsync(T item)
         {
-            _dbcontext.Add(item);
+            await _dbcontext.AddAsync(item);
         }
 
         public void Delete(T item)
@@ -29,18 +29,18 @@ namespace Business_Logic_Layer.Repositories
             _dbcontext.Remove(item);
         }
 
-        public IEnumerable<T> GetAll()
+        public async Task<IEnumerable<T>> GetAllAsync()
         {
             if (typeof(T) == typeof(Employee))
             {
-                return (IEnumerable<T>) _dbcontext.Employees.Include(x => x.Department).ToList();
+                return  (IEnumerable<T>) await _dbcontext.Employees.Include(x => x.Department).ToListAsync();
             }
-            return _dbcontext.Set<T>().ToList();
+            return await _dbcontext.Set<T>().ToListAsync();
         }
 
 
-        public T GetById(int id)
-            => _dbcontext.Set<T>().Find(id);
+        public async Task<T> GetByIdAsync(int id)
+            => await _dbcontext.Set<T>().FindAsync(id);
 
 
         public void Update(T item)

@@ -4,6 +4,7 @@ using Data_Access_Layer.Contexts;
 using Data_Access_Layer.Models;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Threading.Tasks;
 
 namespace Presentation_Layer.Controllers
 {
@@ -15,9 +16,9 @@ namespace Presentation_Layer.Controllers
         {
             _unitOfWork = unitOfWork;
         }
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var departments = _unitOfWork.DepartmentRepository.GetAll();
+            var departments = await _unitOfWork.DepartmentRepository.GetAllAsync();
             return View(departments);
         }
         public IActionResult Create()
@@ -25,12 +26,12 @@ namespace Presentation_Layer.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult Create(Department department)
+        public async Task<IActionResult> Create(Department department)
         {
             if (ModelState.IsValid)
             {
-                _unitOfWork.DepartmentRepository.Add(department);
-                int result = _unitOfWork.Complete();
+                await _unitOfWork.DepartmentRepository.AddAsync(department);
+                int result = await _unitOfWork.CompleteAsync();
                 if (result > 0)
                     TempData["Message"] = "Department Is Created";
                 return RedirectToAction(nameof(Index));
@@ -38,22 +39,22 @@ namespace Presentation_Layer.Controllers
 
             return View(department);
         }
-        public IActionResult Details(int? id, string ViewName = "Details")
+        public async Task<IActionResult> Details(int? id, string ViewName = "Details")
         {
             if (id is null)
                 return BadRequest();
-            var department = _unitOfWork.DepartmentRepository.GetById(id.Value);
+            var department = await _unitOfWork.DepartmentRepository.GetByIdAsync(id.Value);
             if (department is null)
                 return NotFound();
             return View(ViewName, department);
         }
-        public IActionResult Edit(int? id)
+        public async Task<IActionResult> Edit(int? id)
         {
-            return Details(id, "Edit");
+            return await Details(id, "Edit");
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(Department department, [FromRoute] int id)
+        public async Task<IActionResult> Edit(Department department, [FromRoute] int id)
         {
             if (department.Id != id)
                 return BadRequest();
@@ -62,7 +63,7 @@ namespace Presentation_Layer.Controllers
                 try
                 {
                     _unitOfWork.DepartmentRepository.Update(department);
-                    _unitOfWork.Complete();
+                    await _unitOfWork.CompleteAsync();
                     return RedirectToAction(nameof(Index));
                 }
                 catch (Exception ex)
@@ -73,14 +74,14 @@ namespace Presentation_Layer.Controllers
             return View(department);
         }
 
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
 
-            return Details(id, "Delete");
+            return await Details(id, "Delete");
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Delete(Department department, [FromRoute] int? id)
+        public async Task<IActionResult> Delete(Department department, [FromRoute] int? id)
         {
 
             if (department.Id != id)
@@ -90,7 +91,7 @@ namespace Presentation_Layer.Controllers
                 try
                 {
                     _unitOfWork.DepartmentRepository.Delete(department);
-                    _unitOfWork.Complete();
+                    await _unitOfWork.CompleteAsync();
                     return RedirectToAction(nameof(Index));
                 }
                 catch (Exception ex)

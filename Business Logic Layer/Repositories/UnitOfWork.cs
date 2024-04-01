@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Business_Logic_Layer.Repositories
 {
-    public class UnitOfWork : IUnitOfWork,IDisposable
+    public class UnitOfWork : IUnitOfWork, IDisposable
     {
         private readonly ApplicationDbContext _dbContext;
 
@@ -22,13 +22,13 @@ namespace Business_Logic_Layer.Repositories
             _dbContext = dbContext;
         }
 
-        public int Complete()
+        public async Task<int> CompleteAsync()
         {
-            return _dbContext.SaveChanges();
+            return await _dbContext.SaveChangesAsync();
         }
         public void Dispose()
         {
-            _dbContext.Dispose();
+            _dbContext.DisposeAsync();
         }
     }
 }

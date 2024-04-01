@@ -10,6 +10,6 @@ namespace Business_Logic_Layer.Interfaces
     {
         public IEmployeeRepository EmployeeRepository { get; set; }
         public IDepartmentRepository DepartmentRepository { get; set; }
-        int Complete();
+        Task<int> CompleteAsync();
     }
 }

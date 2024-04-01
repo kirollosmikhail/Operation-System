@@ -8,9 +8,9 @@ namespace Business_Logic_Layer.Interfaces
 {
     public interface IGenericRepository<T>
     {
-        IEnumerable<T> GetAll();
-        T GetById(int id);
-        void Add(T item);
+        Task<IEnumerable<T>> GetAllAsync();
+        Task <T> GetByIdAsync(int id);
+        Task AddAsync(T item);
         void Update(T item);
         void Delete(T item);
     }
