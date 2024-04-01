@@ -1,6 +1,8 @@
-﻿@model Employee
-
-<div asp-validation-summary="All"></div>
+﻿@model EmployeeViewModel
+<div class="form-group">
+    <img src="~/Files/Images/@Model.ImageName" class="rounded" width="100" />
+    <input asp-for="ImageName" hidden />
+</div>
 <div class="form-group">
     <label class="col-form-label" asp-for="Name"></label>
     <input class="form-control" asp-for="Name" readonly />

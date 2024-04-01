@@ -9,14 +9,15 @@ namespace Presentation_Layer.Controllers
 {
     public class DepartmentController : Controller
     {
-        private readonly IDepartmentRepository _departmentRespository;
-        public DepartmentController(IDepartmentRepository departmentRespository)
+        private readonly IUnitOfWork _unitOfWork;
+
+        public DepartmentController(IUnitOfWork unitOfWork)
         {
-            _departmentRespository = departmentRespository;
+            _unitOfWork = unitOfWork;
         }
         public IActionResult Index()
         {
-            var departments = _departmentRespository.GetAll();
+            var departments = _unitOfWork.DepartmentRepository.GetAll();
             return View(departments);
         }
         public IActionResult Create()
@@ -28,7 +29,8 @@ namespace Presentation_Layer.Controllers
         {
             if (ModelState.IsValid)
             {
-                int result = _departmentRespository.Add(department);
+                _unitOfWork.DepartmentRepository.Add(department);
+                int result = _unitOfWork.Complete();
                 if (result > 0)
                     TempData["Message"] = "Department Is Created";
                 return RedirectToAction(nameof(Index));
@@ -40,20 +42,13 @@ namespace Presentation_Layer.Controllers
         {
             if (id is null)
                 return BadRequest();
-            var department = _departmentRespository.GetById(id.Value);
+            var department = _unitOfWork.DepartmentRepository.GetById(id.Value);
             if (department is null)
                 return NotFound();
             return View(ViewName, department);
         }
         public IActionResult Edit(int? id)
         {
-            //if (id is null)
-            //    return BadRequest();
-            //var department = _departmentRespository.GetById(id.Value);
-            //if (department is null)
-            //    NotFound();
-            //return View(department);
-
             return Details(id, "Edit");
         }
         [HttpPost]
@@ -66,7 +61,8 @@ namespace Presentation_Layer.Controllers
             {
                 try
                 {
-                    _departmentRespository.Update(department);
+                    _unitOfWork.DepartmentRepository.Update(department);
+                    _unitOfWork.Complete();
                     return RedirectToAction(nameof(Index));
                 }
                 catch (Exception ex)
@@ -93,7 +89,8 @@ namespace Presentation_Layer.Controllers
             {
                 try
                 {
-                    _departmentRespository.Delete(department);
+                    _unitOfWork.DepartmentRepository.Delete(department);
+                    _unitOfWork.Complete();
                     return RedirectToAction(nameof(Index));
                 }
                 catch (Exception ex)
