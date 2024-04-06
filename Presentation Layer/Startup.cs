@@ -1,3 +1,4 @@
+using AutoMapper;
 using Business_Logic_Layer.Interfaces;
 using Business_Logic_Layer.Repositories;
 using Data_Access_Layer.Contexts;
@@ -38,7 +39,13 @@ namespace Presentation_Layer
             });// dependency injection
             
             services.AddScoped<IDepartmentRepository, DepartmentRepository>();
-            services.AddAutoMapper(M => M.AddProfile(new EmployeeProfile()));
+            //services.AddAutoMapper(M => M.AddProfile(new EmployeeProfile()));
+            services.AddAutoMapper(M => M.AddProfiles(new List<Profile>()
+            {
+                new EmployeeProfile(),
+                new UserProfile(),
+                new RoleProfile()
+            }));
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             services.AddIdentity<ApplicationUser , IdentityRole>(Options =>

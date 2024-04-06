@@ -34,7 +34,7 @@
                     <td>@Html.DisplayFor(x => item.Code)</td>
                     <td>@Html.DisplayFor(x => item.Name)</td>
                     <td>@Html.DisplayFor(x => item.DateOfCreation)</td>
-                    <partial name="_ButtonsPartialView" model="item.Id" />
+                    <partial name="_ButtonsPartialView" model="item.Id.ToString()" />
                 </tr>
             }
         </tbody>
